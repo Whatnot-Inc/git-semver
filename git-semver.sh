@@ -174,7 +174,8 @@ version-get() {
     local tags=$(git tag)
     local sorted_tags=$(
         echo "$tags" |
-            grep -oP "^${VERSION_PREFIX}\K[0-9]+\.[0-9]+\.[0-9]+.*" |
+            perl -nle "m/^v${VERSION_PREFIX}\K[0-9]+\.[0-9]+\.[0-9]+.*/ && print $&" |
+            #grep "^${VERSION_PREFIX}\K[0-9]+\.[0-9]+\.[0-9]+.*" |
             awk -F '[-+]' '{ print $1 }' |
             uniq |
             sort -t '.' -k 1,1n -k 2,2n -k 3,3n |
